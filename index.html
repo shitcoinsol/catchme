@@ -96,22 +96,51 @@
 <script src="js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-  console.log("✅ SCRIPT LOADED");
+  // ✅ 콘솔 로그
+  console.log("✅ Supabase setup initialized");
 
-  window.sb = supabase.createClient(
+  // ✅ Supabase 클라이언트 (전역에 올리지 않음)
+  const sb = supabase.createClient(
     "https://jolxfdmhevjtwbfvhyeu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvbHhmZG1oZXZqdHdiZnZoeWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg2MzgsImV4cCI6MjA2NTQwNDYzOH0.ujZGETytKXZHEW0fwJYqfALbib5DX3uTC0g6ZFbfjis"
   );
 
-   async function(wallet, score) {
-    console.log("submitToSupabase loaded", wallet, score);
+  // ✅ 전역에 안보이도록 내부 함수 정의
+  async function submitToSupabase(wallet, score) {
+    console.log("📤 Sending to Supabase:", wallet, score);
     const { data, error } = await sb.from("scores").insert([{ wallet, score }]);
     if (error) {
       console.error("❌ Submit failed:", error);
     } else {
       console.log("✅ Submit success:", data);
     }
-  };
+  }
+
+  // ✅ 랭킹 불러오기
+  async function fetchLeaderboardFromSupabase() {
+    const { data, error } = await sb
+      .from("scores")
+      .select("*")
+      .order("score", { ascending: false })
+      .limit(50);
+
+    if (error) return console.error("❌ Fetch error:", error);
+
+    const leaderboardList = document.getElementById("leaderboard-list");
+    leaderboardList.innerHTML = "";
+    data.forEach((entry, idx) => {
+      const li = document.createElement("li");
+      const masked = entry.wallet.slice(0, 4) + "..." + entry.wallet.slice(-4);
+      li.textContent = `${idx + 1}. ${masked} - ${entry.score}`;
+      leaderboardList.appendChild(li);
+    });
+  }
+
+  // ✅ 페이지 로드 시 실행
+  window.addEventListener("DOMContentLoaded", fetchLeaderboardFromSupabase);
+
+  // ✅ js에서 호출할 수 있도록 내부 함수만 넘김
+  window._internalSubmitScore = submitToSupabase;
 </script>
 
 </body>
