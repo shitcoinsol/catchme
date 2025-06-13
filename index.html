@@ -104,15 +104,38 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvbHhmZG1oZXZqdHdiZnZoeWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg2MzgsImV4cCI6MjA2NTQwNDYzOH0.ujZGETytKXZHEW0fwJYqfALbib5DX3uTC0g6ZFbfjis"
   );
 
-  async function submitToSupabase(wallet, score) {
-    const { data, error } = await sbClient.from("scores").insert([{ wallet, score }]);
-    if (error) {
-      console.error("❌ Submit failed:", error);
-    } else {
-      console.log("✅ Submit success");
-    }
-  }
+async function submitToSupabase(wallet, score) {
+  try {
+    const { data: existing, error: readError } = await sbClient
+      .from("scores")
+      .select("score")
+      .eq("wallet", wallet)
+      .maybeSingle();
 
+    if (readError) throw readError;
+
+    if (existing && existing.score >= score) {
+      console.log("🚫 Not a higher score. Skipping update.");
+      return;
+    }
+
+    if (existing) {
+      await sbClient
+        .from("scores")
+        .update({ score })
+        .eq("wallet", wallet);
+      console.log("🔁 Score updated.");
+    } else {
+      await sbClient
+        .from("scores")
+        .insert([{ wallet, score }]);
+      console.log("✅ Score inserted.");
+    }
+
+  } catch (err) {
+    console.error("❌ Submit failed:", err);
+  }
+}
   // 내부 전용으로만 노출
   window._submitToSupabase = submitToSupabase;
   window._sbClient = sbClient;
