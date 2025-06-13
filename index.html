@@ -119,33 +119,6 @@
   Object.freeze(window._submitToSupabase);
   Object.freeze(window._sbClient);
 })();
-</script>
-  // ✅ 랭킹 불러오기
-  async function fetchLeaderboardFromSupabase() {
-    const { data, error } = await sb
-      .from("scores")
-      .select("*")
-      .order("score", { ascending: false })
-      .limit(50);
-
-    if (error) return console.error("❌ Fetch error:", error);
-
-    const leaderboardList = document.getElementById("leaderboard-list");
-    leaderboardList.innerHTML = "";
-    data.forEach((entry, idx) => {
-      const li = document.createElement("li");
-      const masked = entry.wallet.slice(0, 4) + "..." + entry.wallet.slice(-4);
-      li.textContent = `${idx + 1}. ${masked} - ${entry.score}`;
-      leaderboardList.appendChild(li);
-    });
-  }
-
-  // ✅ 페이지 로드 시 실행
-  window.addEventListener("DOMContentLoaded", fetchLeaderboardFromSupabase);
-
-  // ✅ js에서 호출할 수 있도록 내부 함수만 넘김
-  window._internalSubmitScore = submitToSupabase;
-</script>
 
 </body>
 </html>
