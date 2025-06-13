@@ -1,4 +1,3 @@
-
 const emojis = ["🍕", "💩", "🧻", "🪙", "🧠", "🪞", "🍩", "💣", "😺", "👻", "🛸", "🎯"];
 let round = 0;
 let speed = 3000;
@@ -16,7 +15,6 @@ let catchSound = new Audio("sound/catch.mp3");
 
 let gameTimer;
 let lives = 5;
-let leaderboard = [];
 let canSubmit = false;
 
 function randomEmoji() {
@@ -98,32 +96,39 @@ function endGame() {
     canSubmit = true;
 }
 
-function submitScore() {
+async function submitScore() {
     if (!canSubmit) return alert("You already submitted your score.");
     const addr = walletInput.value.trim();
     if (addr.length < 8) return alert("Wallet address too short!");
-    const masked = addr.slice(0, 4) + "..." + addr.slice(-4);
-    leaderboard.push({ addr: masked, score: round });
-    leaderboard.sort((a, b) => b.score - a.score);
-    leaderboard = leaderboard.slice(0, 50);
-    updateLeaderboard();
     walletInput.value = "";
     canSubmit = false;
 
-    // 👇 supabase 전송
+    // Supabase에 저장
     if (typeof submitToSupabase === "function") {
-        submitToSupabase(addr, round);
+        await submitToSupabase(addr, round);
+        await loadLeaderboard();
     } else {
         console.warn("⚠ submitToSupabase is not defined");
     }
 }
 
+async function loadLeaderboard() {
+    const { data, error } = await sb
+        .from("scores")
+        .select("*")
+        .order("score", { ascending: false })
+        .limit(50);
 
-function updateLeaderboard() {
+    if (error) {
+        console.error("❌ Failed to load leaderboard:", error);
+        return;
+    }
+
     leaderboardList.innerHTML = "";
-    leaderboard.forEach((entry, idx) => {
+    data.forEach((entry, idx) => {
         const li = document.createElement("li");
-        li.textContent = `${idx + 1}. ${entry.addr} - ${entry.score}`;
+        const masked = entry.wallet.slice(0, 4) + "..." + entry.wallet.slice(-4);
+        li.textContent = `${idx + 1}. ${masked} - ${entry.score}`;
         if (idx === 0) li.classList.add("top-1");
         else if (idx === 1) li.classList.add("top-2");
         else if (idx === 2) li.classList.add("top-3");
@@ -143,6 +148,10 @@ startBtn.onclick = () => {
     message.textContent = "Catch the item before it hits the ground!";
     canSubmit = false;
     startRound();
+    loadLeaderboard(); // 게임 시작할 때 최신 랭킹 불러오기
 };
 
 submitBtn.onclick = submitScore;
+
+// 페이지 로드시 초기 랭킹 표시
+window.onload = loadLeaderboard;
