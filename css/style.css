@@ -1,0 +1,118 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    font-family: 'Arial Black', 'Segoe UI', sans-serif;
+    color: white;
+    text-align: center;
+}
+.hero {
+    padding: 40px 20px;
+    background-color: #111;
+    border-bottom: 2px solid #444;
+}
+.hero h1 {
+    font-size: 2.8em;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+}
+.hero p {
+    font-size: 1.2em;
+    color: #aaa;
+}
+.buttons {
+    margin-top: 20px;
+}
+.btn {
+    background: #0f0f0f;
+    color: #fff;
+    padding: 12px 24px;
+    border: 2px solid #444;
+    text-decoration: none;
+    margin: 5px;
+    display: inline-block;
+    font-weight: bold;
+    transition: 0.2s ease-in-out;
+}
+.btn:hover {
+    background: #333;
+    border-color: #888;
+}
+.game-section {
+    padding: 40px 20px;
+}
+#game-area {
+    position: relative;
+    width: 300px;
+    height: 500px;
+    margin: 20px auto;
+    border: 3px solid #555;
+    background: rgba(255,255,255,0.05);
+    overflow: hidden;
+}
+#item {
+    position: absolute;
+    font-size: 40px;
+    cursor: pointer;
+}
+#game-ui {
+    margin-top: 10px;
+}
+#start-btn, #submit-score {
+    font-size: 1em;
+    padding: 10px 20px;
+    background: #222;
+    color: #fff;
+    border: 2px solid #666;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#wallet-input {
+    padding: 8px;
+    font-size: 1em;
+    margin-top: 10px;
+    background: #111;
+    border: 2px solid #444;
+    color: white;
+}
+.leaderboard {
+    padding: 40px 20px;
+    background-color: #111;
+}
+.leaderboard h2 {
+    margin-bottom: 10px;
+}
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 300px;
+    max-height: 280px;
+    overflow-y: auto;
+    border: 2px solid #444;
+    background: #000;
+}
+#leaderboard-list li {
+    text-align: left;
+    font-size: 1.1em;
+    padding: 6px;
+    border-bottom: 1px solid #444;
+}
+.note {
+    margin-top: 10px;
+    color: #999;
+}
+.footer {
+    padding: 20px;
+    font-size: 0.9em;
+    background-color: #000;
+    border-top: 2px solid #333;
+    color: #555;
+}
+
+#leaderboard-list li.top-1 { color: gold; font-weight: bold; background: #222; }
+#leaderboard-list li.top-2 { color: silver; font-weight: bold; background: #222; }
+#leaderboard-list li.top-3 { color: #cd7f32; font-weight: bold; background: #222; }
+#leaderboard-list li.top-10 { background: #111; font-weight: bold; color: #0af; }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch Me If You Can - $CATCH</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header class="hero">
+        <h1>$CATCH - Catch Me If You Can</h1>
+        <p>The faster you click, the more you earn.<br>Reflex is the only utility.</p>
+        <div class="buttons">
+            <a href="https://pump.fun" target="_blank" class="btn">Buy $CATCH</a>
+            <a href="https://t.me/yourcommunity" target="_blank" class="btn">Community</a>
+        </div>
+    </header>
+
+    <section class="game-section">
+        <h2>🎮 Reflex Game</h2>
+        <div id="game-area">
+            <div id="item"></div>
+        </div>
+        <div id="game-ui">
+            <p>Round: <span id="round">0</span></p>
+            <p>Lives: <span id="lives">❤️❤️❤️❤️❤️</span></p>
+            <p id="message">Catch the item before it hits the ground!</p>
+            <input type="text" id="wallet-input" style="display:none;" placeholder="Enter your wallet address">
+            <button id="submit-score" style="display:none;">Submit Score</button>
+        </div>
+        <button id="start-btn">Start Game</button>
+    </section>
+
+    <section class="leaderboard">
+        <h2>🏆 Daily Top 10</h2>
+        <ul id="leaderboard-list">
+            <li id="slot-1">-</li>
+            <li id="slot-2">-</li>
+            <li id="slot-3">-</li>
+            <li id="slot-4">-</li>
+            <li id="slot-5">-</li>
+            <li id="slot-6">-</li>
+            <li id="slot-7">-</li>
+            <li id="slot-8">-</li>
+            <li id="slot-9">-</li>
+            <li id="slot-10">-</li>
+            <li id="slot-11">-</li>
+            <li id="slot-12">-</li>
+            <li id="slot-13">-</li>
+            <li id="slot-14">-</li>
+            <li id="slot-15">-</li>
+            <li id="slot-16">-</li>
+            <li id="slot-17">-</li>
+            <li id="slot-18">-</li>
+            <li id="slot-19">-</li>
+            <li id="slot-20">-</li>
+            <li id="slot-21">-</li>
+            <li id="slot-22">-</li>
+            <li id="slot-23">-</li>
+            <li id="slot-24">-</li>
+            <li id="slot-25">-</li>
+            <li id="slot-26">-</li>
+            <li id="slot-27">-</li>
+            <li id="slot-28">-</li>
+            <li id="slot-29">-</li>
+            <li id="slot-30">-</li>
+            <li id="slot-31">-</li>
+            <li id="slot-32">-</li>
+            <li id="slot-33">-</li>
+            <li id="slot-34">-</li>
+            <li id="slot-35">-</li>
+            <li id="slot-36">-</li>
+            <li id="slot-37">-</li>
+            <li id="slot-38">-</li>
+            <li id="slot-39">-</li>
+            <li id="slot-40">-</li>
+            <li id="slot-41">-</li>
+            <li id="slot-42">-</li>
+            <li id="slot-43">-</li>
+            <li id="slot-44">-</li>
+            <li id="slot-45">-</li>
+            <li id="slot-46">-</li>
+            <li id="slot-47">-</li>
+            <li id="slot-48">-</li>
+            <li id="slot-49">-</li>
+            <li id="slot-50">-</li>
+        </ul>
+        <p class="note">Top 10 players split 90% of creator fees — based on $CATCH holdings.</p>
+    </section>
+
+    <footer class="footer">
+        <p>No roadmap. No promises. Just click.</p>
+        <p>Powered by memes, sweat, and broken mice. 🐭</p>
+    </footer>
+
+<script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  console.log("✅ SCRIPT LOADED");
+
+  const sb = supabase.createClient(
+    "https://jokxfdmhevjtwbfvhyeu.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvbHhmZG1oZXZqdHdiZnZoeWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg2MzgsImV4cCI6MjA2NTQwNDYzOH0.ujZGETytKXZHEW0fwJYqfALbib5DX3uTC0g6ZFbfjis"
+  );
+
+  window.submitToSupabase = async function(wallet, score) {
+    console.log("submitToSupabase loaded", wallet, score);
+    const { data, error } = await sb.from("scores").insert([{ wallet, score }]);
+    if (error) {
+      console.error("❌ Submit failed:", error);
+    } else {
+      console.log("✅ Submit success:", data);
+    }
+  };
+</script>
+
+</body>
+</html>
