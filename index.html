@@ -106,7 +106,6 @@
   );
 
   // ✅ 전역에 안보이도록 내부 함수 정의
-  async function submitToSupabase(wallet, score) {
     console.log("📤 Sending to Supabase:", wallet, score);
     const { data, error } = await sb.from("scores").insert([{ wallet, score }]);
     if (error) {
