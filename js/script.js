@@ -113,7 +113,7 @@ if (typeof window._submitToSupabase === "function") {
 }
 
 async function loadLeaderboard() {
-    const { data, error } = await sb
+const { data, error } = await window._sbClient
         .from("scores")
         .select("*")
         .order("score", { ascending: false })
