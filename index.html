@@ -96,25 +96,30 @@
 <script src="js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-  // ✅ 콘솔 로그
-  console.log("✅ Supabase setup initialized");
-
-  // ✅ Supabase 클라이언트 (전역에 올리지 않음)
-  const sb = supabase.createClient(
+(function() {
+  const sbClient = supabase.createClient(
     "https://jolxfdmhevjtwbfvhyeu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvbHhmZG1oZXZqdHdiZnZoeWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg2MzgsImV4cCI6MjA2NTQwNDYzOH0.ujZGETytKXZHEW0fwJYqfALbib5DX3uTC0g6ZFbfjis"
   );
 
-  // ✅ 전역에 안보이도록 내부 함수 정의
-    console.log("📤 Sending to Supabase:", wallet, score);
-    const { data, error } = await sb.from("scores").insert([{ wallet, score }]);
+  async function submitToSupabase(wallet, score) {
+    const { data, error } = await sbClient.from("scores").insert([{ wallet, score }]);
     if (error) {
       console.error("❌ Submit failed:", error);
     } else {
-      console.log("✅ Submit success:", data);
+      console.log("✅ Submit success");
     }
   }
 
+  // 내부 전용으로만 노출
+  window._submitToSupabase = submitToSupabase;
+  window._sbClient = sbClient;
+
+  // 콘솔에서 막기 위한 Object.freeze
+  Object.freeze(window._submitToSupabase);
+  Object.freeze(window._sbClient);
+})();
+</script>
   // ✅ 랭킹 불러오기
   async function fetchLeaderboardFromSupabase() {
     const { data, error } = await sb
