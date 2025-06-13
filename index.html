@@ -103,7 +103,7 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvbHhmZG1oZXZqdHdiZnZoeWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4Mjg2MzgsImV4cCI6MjA2NTQwNDYzOH0.ujZGETytKXZHEW0fwJYqfALbib5DX3uTC0g6ZFbfjis"
   );
 
-  window.submitToSupabase = async function(wallet, score) {
+   async function(wallet, score) {
     console.log("submitToSupabase loaded", wallet, score);
     const { data, error } = await sb.from("scores").insert([{ wallet, score }]);
     if (error) {
