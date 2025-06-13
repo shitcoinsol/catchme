@@ -104,8 +104,8 @@ async function submitScore() {
     canSubmit = false;
 
     // Supabase에 저장
-    if (typeof submitToSupabase === "function") {
-        await submitToSupabase(addr, round);
+if (typeof window._submitToSupabase === "function") {
+    await window._submitToSupabase(addr, round);
         await loadLeaderboard();
     } else {
         console.warn("⚠ submitToSupabase is not defined");
